@@ -1,0 +1,9 @@
+Title:		minefield4-builder.tcz
+Description:	Meta-package that contains all dependencies for building minefield4.
+Version:	1.0
+Author:		Matt Causey
+Size:		0k
+Extension_by:	Matt Causey
+Comments:	None
+Change-log:	----
+		2011/04/16 - initial version
