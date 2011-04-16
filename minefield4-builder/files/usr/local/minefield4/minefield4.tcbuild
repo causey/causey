@@ -3,21 +3,23 @@ NOW=`pwd`
 PKGDIR="$NOW"/package
 PKG="$PKGDIR"/pkg
 DEV="$PKGDIR"/dev
-SOURCE="firefox-4.0.source.tar.xz"
+SVR="http://releases.mozilla.org/pub/mozilla.org/firefox/releases/latest-4.0/source/"
+SOURCE="firefox-4.0.source.tar.bz2"
 
 [ -d "$DEV" ] && rm -r "$DEV"
 [ -d "$PKG" ] && rm -r "$PKG"
 [ -d mozilla-2.0 ] && rm -rf mozilla-2.0
 [ -d firefox-build ] && rm -rf firefox-build
 mkdir -p "$PKG" "$DEV"/usr/local/minefield4
+curl "$SVR"/"$SOURCE" -o "$SOURCE"
 tar xvf "$SOURCE"
+
 cd mozilla-2.0
 cp ../mozconfig .mozconfig
 
 sleep 3
 make -f client.mk build
 make -f client.mk DESTDIR="$PKG" install
-
 
 mv "$PKG"/usr/local/minefield4/idl "$DEV"/usr/local/minefield4/
 mv "$PKG"/usr/local/minefield4/include "$DEV"/usr/local/minefield4/
