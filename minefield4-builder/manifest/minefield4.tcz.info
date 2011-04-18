@@ -1,0 +1,17 @@
+Title:          minefield4.tcz
+Description:    Unbranded lightweight Firefox build
+Version:        4.0
+Author:         Mozilla
+Original-site:  http://mozilla.com/firefox
+Copying-policy: MPL
+Size:		17.9M
+Extension_by:   Matt Causey (matt.causey@gmail.com)
+Comments:       A custom build of Firefox 4.0 for TinyCore
+		Unlike the official Mozilla one, this does not
+		depend on Xorg, and this also has a cooler icon ;)
+-
+		Customizations include dropping *all* unneeded cruft,
+		like Gnome or D-bus support, updater, crash reporter.
+Change-log:     
+                2011/04/17 Original
+Current:	2011/04/17 Original
