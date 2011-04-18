@@ -6,13 +6,16 @@ DEV="$PKGDIR"/dev
 SVR="http://releases.mozilla.org/pub/mozilla.org/firefox/releases/latest-4.0/source/"
 SOURCE="firefox-4.0.source.tar.bz2"
 
-#[ -d "$DEV" ] && rm -r "$DEV"
-#[ -d "$PKG" ] && rm -r "$PKG"
-#[ -d mozilla-2.0 ] && rm -rf mozilla-2.0
-#[ -d firefox-build ] && rm -rf firefox-build
+[ -d "$DEV" ] && rm -r "$DEV"
+[ -d "$PKG" ] && rm -r "$PKG"
+[ -d mozilla-2.0 ] && rm -rf mozilla-2.0
+[ -d firefox-build ] && rm -rf firefox-build
 mkdir -p "$PKG" "$DEV"/usr/local/minefield4
-#curl "$SVR"/"$SOURCE" -o "$SOURCE"
-#tar xvf "$SOURCE"
+if [ ! -f "$SOURCE" ]; then
+  curl "$SVR"/"$SOURCE" -o "$SOURCE"
+fi
+
+tar xvf "$SOURCE"
 
 cd mozilla-2.0
 cp ../mozconfig .mozconfig
@@ -26,9 +29,9 @@ mv "$PKG"/usr/local/minefield4/include "$DEV"/usr/local/minefield4/
 mv "$PKG"/usr/local/minefield4/*-devel-* "$DEV"/usr/local/minefield4/
 
 cd "$NOW"
-tar xvf extensiondata.tar.xz -C "$PKG"
+tar xvf extensiondata.tar.gz -C "$PKG"
 chmod -R 775 "$PKG"/usr/local/tce.installed
-chown -R root:staff "$PKG"/usr/local/tce.installed
+chown -R :staff "$PKG"/usr/local/tce.installed
 
 DIR="$(basename `find "$PKG"/usr/local/minefield4/ -maxdepth 1 -mindepth 1 -type d` | cut -d- -f1)"
 VER="$(basename `find "$PKG"/usr/local/minefield4/ -maxdepth 1 -mindepth 1 -type d` | cut -d- -f2)"
@@ -36,13 +39,13 @@ VER="$(basename `find "$PKG"/usr/local/minefield4/ -maxdepth 1 -mindepth 1 -type
 sed -i "s:DIR=:DIR="${DIR}":" "$PKG"/usr/local/tce.installed/minefield4
 sed -i "s:VER=:VER="${VER}":" "$PKG"/usr/local/tce.installed/minefield4
 
-
-
 sed -i '/export MOZILLA_FIVE_HOME LD_LIBRARY_PATH/i\
 export MOZ_PLUGIN_PATH=~/.mozilla/plugins:${MRE_HOME}/plugins:/usr/local/lib/mozilla/plugins:${MOZ_PLUGIN_PATH}
 ' "$PKG"/usr/local/minefield4/firefox-4.0/run-mozilla.sh
 
 cd "$PKGDIR"
-mksquashfs pkg minefield4.tcz
-mksquashfs dev minefield4-dev.tcz
+mksquashfs pkg minefield4.tcz -noappend
+mk5sum minefield4.tcz > minefield4.tcz.md5.txt
+mksquashfs dev minefield4-dev.tcz -noappend
+md5sum minefield4-dev.tcz > minefield4-dev.tcz.md5.txt
 
